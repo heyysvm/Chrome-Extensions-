@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Notes & Tasks</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    
+    <div class="notes-section">
+      <h2>Scratchpad</h2>
+      <textarea id="notes-area" placeholder="Type your notes here... They autosave!"></textarea>
+    </div>
+
+    <div class="tasks-section">
+      <h2>Tasks</h2>
+      
+      <div class="add-task-container">
+        <input type="text" id="task-title" placeholder="Task Title">
+        <textarea id="task-desc" rows="2" placeholder="Task Explanation"></textarea>
+        <button id="add-task-btn">Add Task</button>
+      </div>
+
+      <div class="task-list" id="task-list">
+        </div>
+    </div>
+
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
