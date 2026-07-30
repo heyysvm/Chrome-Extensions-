@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OmniBoard</title>
+  <link rel="stylesheet" href="popup.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div class="brand">
+      <div class="icon-wrap">📋</div>
+      <h1>Omni<span>Board</span></h1>
+      <span class="version-badge">v1.0</span>
+    </div>
+    <div class="actions-top">
+      <button id="launchPipBtn" class="btn-pip" title="Launch Frameless Floating PIP Board">
+        🚀 Floating PIP
+      </button>
+    </div>
+  </header>
+
+  <!-- SEARCH & QUICK ADD BAR -->
+  <div class="search-bar-wrap">
+    <div class="search-box">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="searchInput" placeholder="Search clips or type new snippet...">
+      <button id="addManualBtn" class="btn-add" title="Save custom clip">+</button>
+    </div>
+  </div>
+
+  <!-- CATEGORY FILTER TABS -->
+  <nav class="filter-tabs">
+    <button class="tab-btn active" data-filter="all">All</button>
+    <button class="tab-btn" data-filter="pinned">📌 Pinned</button>
+    <button class="tab-btn" data-filter="code">💻 Code</button>
+    <button class="tab-btn" data-filter="json">json</button>
+    <button class="tab-btn" data-filter="url">🌐 Links</button>
+    <button class="tab-btn" data-filter="color">🎨 Colors</button>
+  </nav>
+
+  <!-- POWER TRANSFORMER TOOLBAR -->
+  <div class="transformer-box">
+    <div class="transformer-title">⚡ Quick Text Transformer</div>
+    <div class="transformer-btns">
+      <button class="transform-btn" data-transform="strip" title="Strip HTML & Extra Spaces">🧹 Strip Clean</button>
+      <button class="transform-btn" data-transform="uppercase" title="UPPERCASE">abc → ABC</button>
+      <button class="transform-btn" data-transform="lowercase" title="lowercase">ABC → abc</button>
+      <button class="transform-btn" data-transform="titlecase" title="Title Case">Title Case</button>
+      <button class="transform-btn" data-transform="json" title="Format & Beautify JSON">JSON Format</button>
+      <button class="transform-btn ai" data-transform="ai_refactor" title="Prepend ChatGPT Code Refactor prompt">🤖 Refactor Code</button>
+      <button class="transform-btn ai" data-transform="ai_summarize" title="Prepend AI Summarize prompt">🤖 Summarize</button>
+    </div>
+  </div>
+
+  <!-- CLIP LIST CONTAINER -->
+  <main class="clip-container" id="clipList"></main>
+
+  <div id="emptyState" class="empty-state">
+    <div class="empty-icon">📂</div>
+    <p>No clips saved yet.</p>
+    <span class="empty-sub">Copy text anywhere on the web to auto-save to OmniBoard!</span>
+  </div>
+
+  <!-- FOOTER STATS & CLEAR -->
+  <footer>
+    <span id="clipCount">0 clips saved</span>
+    <button id="clearAllBtn" class="btn-clear" title="Clear unpinned clips">Clear Unpinned</button>
+  </footer>
+
+  <script src="popup.js"></script>
+</body>
+</html>
