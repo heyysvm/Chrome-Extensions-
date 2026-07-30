@@ -45,10 +45,6 @@ header {
   gap: 8px;
 }
 
-.brand .icon-wrap {
-  font-size: 18px;
-}
-
 .brand h1 {
   font-size: 17px;
   font-weight: 800;
@@ -107,9 +103,10 @@ header {
 }
 
 .search-icon {
-  font-size: 13px;
+  font-size: 11px;
   color: var(--text-muted);
   margin-right: 6px;
+  font-weight: 600;
 }
 
 .search-box input {
@@ -340,8 +337,8 @@ header {
 .clip-actions {
   display: flex;
   justify-content: flex-end;
-  gap: 6px;
-  opacity: 0.6;
+  gap: 10px;
+  opacity: 0.8;
   transition: opacity 0.2s ease;
 }
 
@@ -354,7 +351,8 @@ header {
   border: none;
   color: var(--text-muted);
   cursor: pointer;
-  font-size: 12px;
+  font-size: 11px;
+  font-weight: 600;
   padding: 2px 4px;
   border-radius: 4px;
   transition: color 0.2s ease;
@@ -384,11 +382,6 @@ header {
   color: var(--text-muted);
 }
 
-.empty-icon {
-  font-size: 32px;
-  margin-bottom: 8px;
-}
-
 .empty-state p {
   font-size: 14px;
   font-weight: 600;
@@ -398,7 +391,7 @@ header {
 .empty-sub {
   font-size: 11px;
   margin-top: 4px;
-  max-width: 220px;
+  max-width: 240px;
   line-height: 1.4;
 }
 
@@ -414,12 +407,18 @@ footer {
   background: rgba(15, 23, 42, 0.95);
 }
 
+.footer-btns {
+  display: flex;
+  gap: 12px;
+}
+
 .btn-clear {
   background: transparent;
   border: none;
   color: var(--text-muted);
   cursor: pointer;
   font-size: 11px;
+  font-weight: 500;
   transition: color 0.2s ease;
 }
 
