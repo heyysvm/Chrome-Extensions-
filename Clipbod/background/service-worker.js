@@ -14,17 +14,19 @@ function detectType(text) {
 }
 
 function injectAllTabs() {
-  chrome.tabs.query({ url: ['http://*/*', 'https://*/*'] }, (tabs) => {
+  chrome.tabs.query({}, (tabs) => {
     for (const tab of tabs) {
-      if (!tab.id) continue;
-      chrome.scripting.executeScript({
-        target: { tabId: tab.id, allFrames: true },
-        files: ['content/content.js']
-      }).catch(() => {});
-      chrome.scripting.insertCSS({
-        target: { tabId: tab.id },
-        files: ['content/content.css']
-      }).catch(() => {});
+      if (!tab.id || !tab.url) continue;
+      if (tab.url.startsWith('http://') || tab.url.startsWith('https://')) {
+        chrome.scripting.executeScript({
+          target: { tabId: tab.id, allFrames: true },
+          files: ['content/content.js']
+        }).catch(() => {});
+        chrome.scripting.insertCSS({
+          target: { tabId: tab.id },
+          files: ['content/content.css']
+        }).catch(() => {});
+      }
     }
   });
 }
@@ -61,11 +63,12 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     }
 
     const text = rawText.trim();
+    console.log('[Clipbod Worker] Processing ADD_CLIP:', text);
 
     chrome.storage.local.get(['omniClips'], (res) => {
       let clips = res.omniClips || [];
 
-      // Remove existing instance if present so it moves to top
+      // Filter out existing copy of same text to move it to top
       clips = clips.filter(c => c.text !== text);
 
       const newClip = {

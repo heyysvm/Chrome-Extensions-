@@ -1,6 +1,4 @@
 (function () {
-  let activeSelectionText = '';
-  let lastCapturedText = '';
   let toastTimeout = null;
 
   function showToast(msg) {
@@ -22,8 +20,9 @@
   function sendClip(rawText) {
     if (!rawText) return;
     const text = rawText.trim();
-    if (!text || text.length === 0 || text === lastCapturedText) return;
-    lastCapturedText = text;
+    if (!text || text.length === 0) return;
+
+    console.log('[Clipbod Content] Capturing copied text:', text);
 
     try {
       chrome.runtime.sendMessage({ action: 'ADD_CLIP', text: text }, (res) => {
@@ -33,22 +32,10 @@
     } catch (e) {}
   }
 
-  document.addEventListener('selectionchange', () => {
-    try {
-      const sel = window.getSelection();
-      if (sel && sel.toString().trim()) {
-        activeSelectionText = sel.toString().trim();
-      }
-    } catch (e) {}
-  }, true);
-
-  function getBestText(e) {
+  function extractText(e) {
     let text = '';
     if (e && e.clipboardData && typeof e.clipboardData.getData === 'function') {
       try { text = e.clipboardData.getData('text/plain'); } catch(err) {}
-    }
-    if (!text && activeSelectionText) {
-      text = activeSelectionText;
     }
     if (!text) {
       try {
@@ -66,27 +53,25 @@
   }
 
   document.addEventListener('copy', (e) => {
-    const text = getBestText(e);
+    const text = extractText(e);
     if (text) sendClip(text);
     setTimeout(() => {
-      const fallbackText = getBestText(e);
-      if (fallbackText) sendClip(fallbackText);
-    }, 50);
+      const lateText = extractText(e);
+      if (lateText) sendClip(lateText);
+    }, 40);
   }, true);
 
   document.addEventListener('cut', (e) => {
-    const text = getBestText(e);
+    const text = extractText(e);
     if (text) sendClip(text);
   }, true);
 
   document.addEventListener('keydown', (e) => {
     if ((e.ctrlKey || e.metaKey) && e.key && e.key.toLowerCase() === 'c') {
-      const text = getBestText(e);
-      if (text) sendClip(text);
       setTimeout(() => {
-        const textLate = getBestText(e);
-        if (textLate) sendClip(textLate);
-      }, 50);
+        const text = extractText(e);
+        if (text) sendClip(text);
+      }, 40);
     }
   }, true);
 })();
