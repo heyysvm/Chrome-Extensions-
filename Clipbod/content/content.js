@@ -1,4 +1,7 @@
 (function () {
+  if (window.__clipbod_injected) return;
+  window.__clipbod_injected = true;
+
   let toastTimeout = null;
   let lastSavedText = '';
 
@@ -115,15 +118,5 @@
         }
       }, 40);
     }
-  }, true);
-
-  // Listener 4: Mouseup check selection
-  document.addEventListener('mouseup', () => {
-    setTimeout(() => {
-      const sel = window.getSelection();
-      if (sel && sel.toString() && sel.toString().trim().length > 3) {
-        // Optional pre-buffer selection check
-      }
-    }, 100);
   }, true);
 })();

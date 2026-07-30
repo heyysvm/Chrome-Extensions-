@@ -9,25 +9,29 @@ async function setupOffscreenDocument() {
   } catch (e) {}
 }
 
-function injectContentScripts() {
+function injectScriptIntoTab(tabId) {
+  if (!tabId) return;
+  chrome.scripting.executeScript({
+    target: { tabId: tabId, allFrames: true },
+    files: ['content/content.js']
+  }).catch(() => {});
+  chrome.scripting.insertCSS({
+    target: { tabId: tabId },
+    files: ['content/content.css']
+  }).catch(() => {});
+}
+
+function injectAllTabs() {
   chrome.tabs.query({ url: ['http://*/*', 'https://*/*'] }, (tabs) => {
     for (const tab of tabs) {
-      if (!tab.id) continue;
-      chrome.scripting.executeScript({
-        target: { tabId: tab.id, allFrames: true },
-        files: ['content/content.js']
-      }).catch(() => {});
-      chrome.scripting.insertCSS({
-        target: { tabId: tab.id },
-        files: ['content/content.css']
-      }).catch(() => {});
+      if (tab.id) injectScriptIntoTab(tab.id);
     }
   });
 }
 
 chrome.runtime.onInstalled.addListener(() => {
   setupOffscreenDocument();
-  injectContentScripts();
+  injectAllTabs();
 
   chrome.storage.local.get(['omniClips'], (res) => {
     if (!res.omniClips) {
@@ -48,6 +52,19 @@ chrome.runtime.onInstalled.addListener(() => {
 
 chrome.runtime.onStartup.addListener(() => {
   setupOffscreenDocument();
+  injectAllTabs();
+});
+
+// Auto-inject when switching tabs
+chrome.tabs.onActivated.addListener((activeInfo) => {
+  injectScriptIntoTab(activeInfo.tabId);
+});
+
+// Auto-inject when navigating or loading tabs
+chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+  if (changeInfo.status === 'complete' || changeInfo.status === 'loading') {
+    injectScriptIntoTab(tabId);
+  }
 });
 
 function detectType(text) {
