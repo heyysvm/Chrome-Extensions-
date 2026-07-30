@@ -14,74 +14,48 @@ document.addEventListener('DOMContentLoaded', () => {
   const filterTabs = document.querySelectorAll('.filter-tabs .tab-btn');
   const transformBtns = document.querySelectorAll('.transform-btn');
 
-  function detectType(text) {
-    if (!text) return 'text';
-    const trimmed = text.trim();
-    if (/^https?:\/\/[^\s]+$/i.test(trimmed)) return 'url';
-    if (/^#(?:[0-9a-fA-F]{3}){1,2}$|^rgb\(\s*\d+\s*,\s*\d+\s*,\s*\d+\s*\)$/i.test(trimmed)) return 'color';
-    if ((trimmed.startsWith('{') && trimmed.endsWith('}')) || (trimmed.startsWith('[') && trimmed.endsWith(']'))) {
-      try {
-        JSON.parse(trimmed);
-        return 'json';
-      } catch (e) {}
-    }
-    if (/\b(const|let|var|function|def|import|export|class|if|return|<html|<\/)\b/.test(trimmed)) return 'code';
-    return 'text';
-  }
-
   function loadClips() {
     chrome.storage.local.get(['omniClips'], (res) => {
-      allClips = (res && res.omniClips) ? res.omniClips : [];
-      renderClips();
-      checkClipboardSync();
+      const clips = (res && res.omniClips) ? res.omniClips : [];
+      if (JSON.stringify(clips) !== JSON.stringify(allClips)) {
+        allClips = clips;
+        renderClips();
+      }
     });
   }
 
-  function checkClipboardSync() {
+  function syncSystemClipboard() {
     if (navigator.clipboard && navigator.clipboard.readText) {
       navigator.clipboard.readText().then(text => {
         if (!text || !text.trim()) return;
         const clean = text.trim();
         if (allClips.length === 0 || allClips[0].text !== clean) {
-          saveNewClip(clean);
+          chrome.runtime.sendMessage({ action: 'ADD_CLIP', text: clean }, () => {
+            loadClips();
+          });
         }
       }).catch(() => {});
     }
   }
 
-  function saveNewClip(rawText) {
-    if (!rawText || !rawText.trim()) return;
-    const text = rawText.trim();
-    chrome.storage.local.get(['omniClips'], (res) => {
-      let clips = (res && res.omniClips) ? res.omniClips : [];
-      if (clips.length > 0 && clips[0].text === text) return;
-
-      clips = clips.filter(c => c.text !== text);
-      const newClip = {
-        id: 'clip_' + Date.now() + '_' + Math.random().toString(36).substr(2, 4),
-        text: text,
-        type: detectType(text),
-        timestamp: Date.now(),
-        pinned: false
-      };
-
-      clips.unshift(newClip);
-      if (clips.length > 300) clips = clips.slice(0, 300);
-
-      chrome.storage.local.set({ omniClips: clips }, () => {
-        allClips = clips;
-        renderClips();
-      });
-    });
-  }
-
-  // Real-time listener for storage changes across tabs
+  // Real-time Storage Listener
   chrome.storage.onChanged.addListener((changes, area) => {
     if (area === 'local' && changes.omniClips) {
       allClips = changes.omniClips.newValue || [];
       renderClips();
     }
   });
+
+  // Real-time Runtime Message Listener
+  chrome.runtime.onMessage.addListener((msg) => {
+    if (msg.action === 'CLIP_UPDATED' && msg.clips) {
+      allClips = msg.clips;
+      renderClips();
+    }
+  });
+
+  // Safety net poll every 1 second
+  setInterval(loadClips, 1000);
 
   function formatTime(ts) {
     const sec = Math.floor((Date.now() - ts) / 1000);
@@ -236,10 +210,12 @@ document.addEventListener('DOMContentLoaded', () => {
   addManualBtn.addEventListener('click', () => {
     const text = searchInput.value.trim();
     if (!text) return;
-    saveNewClip(text);
-    searchInput.value = '';
-    searchQuery = '';
-    showToastNotification('Clip Saved');
+    chrome.runtime.sendMessage({ action: 'ADD_CLIP', text }, () => {
+      searchInput.value = '';
+      searchQuery = '';
+      loadClips();
+      showToastNotification('Clip Saved');
+    });
   });
 
   searchInput.addEventListener('keydown', (e) => {
@@ -253,18 +229,14 @@ document.addEventListener('DOMContentLoaded', () => {
       chrome.storage.local.get(['omniClips'], (res) => {
         let clips = res.omniClips || [];
         clips = clips.filter(c => c.pinned);
-        chrome.storage.local.set({ omniClips: clips }, () => {
-          showToastNotification('Cleared Unpinned Clips');
-        });
+        chrome.storage.local.set({ omniClips: clips });
       });
     });
   }
 
   if (clearAllBtn) {
     clearAllBtn.addEventListener('click', () => {
-      chrome.storage.local.set({ omniClips: [] }, () => {
-        showToastNotification('Cleared All Storage Clips');
-      });
+      chrome.storage.local.set({ omniClips: [] });
     });
   }
 
@@ -298,8 +270,10 @@ document.addEventListener('DOMContentLoaded', () => {
           transformed = `Provide a concise 3-bullet summary of the following text:\n\n"${text}"`;
         }
 
-        saveNewClip(transformed);
-        copyToClipboard(transformed);
+        chrome.runtime.sendMessage({ action: 'ADD_CLIP', text: transformed }, () => {
+          copyToClipboard(transformed);
+          loadClips();
+        });
       } catch (err) {
         showToastNotification('Could not read clipboard');
       }
@@ -398,4 +372,5 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   loadClips();
+  syncSystemClipboard();
 });
