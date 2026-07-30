@@ -1,0 +1,32 @@
+<svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Angry Aura Glow -->
+  <circle cx="100" cy="100" r="92" fill="#ff0044" opacity="0.2"/>
+  <!-- Flattened Ears -->
+  <polygon points="20,70 55,40 75,70" fill="#20222b"/>
+  <polygon points="26,68 55,48 68,68" fill="#ff4d4d"/>
+  <polygon points="180,70 145,40 125,70" fill="#20222b"/>
+  <polygon points="174,68 145,48 132,68" fill="#ff4d4d"/>
+  <!-- Head -->
+  <ellipse cx="100" cy="110" rx="74" ry="60" fill="#2a2d3d"/>
+  <!-- Slanted Angry Eyebrows -->
+  <path d="M50 82 L88 96" stroke="#ff4d4d" stroke-width="6" stroke-linecap="round"/>
+  <path d="M150 82 L112 96" stroke="#ff4d4d" stroke-width="6" stroke-linecap="round"/>
+  <!-- Angry Eyes -->
+  <polygon points="56,98 84,104 62,116" fill="#ffcc00"/>
+  <polygon points="144,98 116,104 138,116" fill="#ffcc00"/>
+  <ellipse cx="70" cy="106" rx="3" ry="7" fill="#000000"/>
+  <ellipse cx="130" cy="106" rx="3" ry="7" fill="#000000"/>
+  <!-- Nose -->
+  <polygon points="100,116 93,124 107,124" fill="#ff4d4d"/>
+  <!-- Furious Hissing Mouth with Fangs -->
+  <path d="M78 130 Q100 120 122 130 Q100 152 78 130 Z" fill="#7a0016" stroke="#ff4d4d" stroke-width="2"/>
+  <polygon points="86,128 90,138 94,128" fill="#ffffff"/>
+  <polygon points="106,128 110,138 114,128" fill="#ffffff"/>
+  <!-- Sharp Whiskers -->
+  <line x1="15" y1="110" x2="60" y2="120" stroke="#ff4d4d" stroke-width="3.5" stroke-linecap="round"/>
+  <line x1="10" y1="130" x2="58" y2="128" stroke="#ff4d4d" stroke-width="3.5" stroke-linecap="round"/>
+  <line x1="185" y1="110" x2="140" y2="120" stroke="#ff4d4d" stroke-width="3.5" stroke-linecap="round"/>
+  <line x1="190" y1="130" x2="142" y2="128" stroke="#ff4d4d" stroke-width="3.5" stroke-linecap="round"/>
+  <!-- Steam / Anger Mark -->
+  <path d="M142 35 L148 20 M154 35 L160 20 M142 20 L160 35" stroke="#ff0044" stroke-width="4" stroke-linecap="round"/>
+</svg>

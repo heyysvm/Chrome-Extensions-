@@ -1,0 +1,10 @@
+import { Router } from 'express';
+import { createPage, getPages, toggleFavorite, deletePage } from '../controllers/pageController.js';
+import { authMiddleware } from '../middleware/auth.js';
+const router = Router();
+router.use(authMiddleware);
+router.post('/', createPage);
+router.get('/', getPages);
+router.patch('/:id/favorite', toggleFavorite);
+router.delete('/:id', deletePage);
+export default router;

@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>fokas.</title>
+  <link rel="stylesheet" href="popup.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&family=Fira+Code:wght@400;600&family=Inter:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;1,400&family=Poppins:wght@400;600;700&family=Space+Grotesk:wght@500;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div class="logo-box">
+      <h1>fok<span>as</span>.</h1>
+      <span class="badge">v1.0</span>
+    </div>
+    <div class="header-right">
+      <div class="focus-mini-indicator" id="headerFocusDot" title="Focus State"></div>
+    </div>
+  </header>
+
+  <!-- FRONT QUICK FOCUS BAR -->
+  <div class="front-focus-bar">
+    <div class="bar-title-row">
+      <span class="bar-label">⚡ Quick Fokas Enforcer</span>
+      <span class="status-pill" id="frontStatusPill">OFF</span>
+    </div>
+
+    <div class="bar-controls">
+      <select id="frontDurationSelect" class="bar-select" title="Session Duration" style="max-width:85px;">
+        <option value="15">15 Min</option>
+        <option value="25" selected>25 Min</option>
+        <option value="45">45 Min</option>
+        <option value="60">60 Min</option>
+      </select>
+      <select id="frontSoundSelect" class="bar-select" title="Violation Sound Effect" style="max-width:130px;">
+        <option value="ios_sos_alarm.wav">🚨 iOS SOS Siren</option>
+        <option value="alert.mp3">🔊 Emergency Alert</option>
+        <option value="alert.wav">📣 Siren Chime</option>
+        <option value="chodu-cid.mp3" selected>🔥 Chodu CID Meme</option>
+        <option value="cid-made-with-Voicemod.mp3">🎧 CID Voicemod</option>
+        <option value="kya-cheda-bhosdi.mp3">🤬 Kya Cheda Bhosdi</option>
+      </select>
+      <button id="frontFocusToggle" class="bar-toggle-btn" style="flex:1;">🐾 Start Fokas Session</button>
+    </div>
+
+    <!-- MULTI-TAB WHITELIST SECTION -->
+    <div class="whitelist-box">
+      <div class="whitelist-title">
+        <span>Allowed Tabs Whitelist (No Alarm)</span>
+        <button id="selectAllTabsBtn" class="small-link-btn">Select All</button>
+      </div>
+      <div id="frontMultiTabList" class="tab-checklist"></div>
+    </div>
+  </div>
+
+  <!-- NAVIGATION TABS -->
+  <nav class="tabs">
+    <button class="tab-btn active" data-view="timer">⏱️ Timer</button>
+    <button class="tab-btn" data-view="stopwatch">⏱️ Stopwatch</button>
+    <button class="tab-btn" data-view="tasks">📋 Tasks</button>
+    <button class="tab-btn" data-view="sticky">📌 Sticky Note</button>
+    <button class="tab-btn" data-view="focus">🐱 Fokas Cat</button>
+  </nav>
+
+  <main>
+
+    <!-- TIMER VIEW -->
+    <section class="view active" id="view-timer">
+      <div class="panel">
+        <div class="presets">
+          <button class="preset-chip" data-min="5">5m Break</button>
+          <button class="preset-chip active" data-min="25">25m Focus</button>
+          <button class="preset-chip" data-min="50">50m Deep</button>
+        </div>
+
+        <div class="setrow" id="timerSetRow">
+          <div class="field"><label>Hours</label><input type="number" id="tH" min="0" max="23" value="0"></div>
+          <div class="field"><label>Minutes</label><input type="number" id="tM" min="0" max="59" value="25"></div>
+          <div class="field"><label>Seconds</label><input type="number" id="tS" min="0" max="59" value="0"></div>
+        </div>
+
+        <div class="clockface" id="timerFace">25:00</div>
+        <div class="sub" id="timerSub">ready to focus</div>
+
+        <div class="row">
+          <button class="btn primary" id="timerStart">Start</button>
+          <button class="btn" id="timerPause">Pause</button>
+          <button class="btn danger" id="timerReset">Reset</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- STOPWATCH VIEW -->
+    <section class="view" id="view-stopwatch">
+      <div class="panel">
+        <div class="clockface" id="swFace">00:00.0</div>
+        <div class="sub">elapsed time tracking</div>
+        <div class="row">
+          <button class="btn primary" id="swStart">Start</button>
+          <button class="btn" id="swLap">Lap</button>
+          <button class="btn danger" id="swReset">Reset</button>
+        </div>
+        <div id="lapList" class="lap-container"></div>
+      </div>
+    </section>
+
+    <!-- TASKS VIEW -->
+    <section class="view" id="view-tasks">
+      <div class="panel">
+        <div class="task-add">
+          <input type="text" id="taskName" placeholder="Task name — e.g. Chapter 4">
+          <input type="number" id="taskMin" min="1" value="25" title="Minutes">
+          <button class="btn primary" id="taskAddBtn">+ Add Task</button>
+        </div>
+        <div id="taskList" class="task-list"></div>
+        <div class="empty" id="taskEmpty">No tasks yet. Add a task to run custom countdowns!</div>
+      </div>
+    </section>
+
+    <!-- STICKY NOTE VIEW -->
+    <section class="view" id="view-sticky">
+      <div class="panel sticky-panel">
+        <div class="section-title">Frameless Floating Note Customization</div>
+        <p class="panel-desc">Clean, badge-free sticky note. Customize overall color & typography, then float it over any app!</p>
+
+        <!-- COLOR PALETTE CHOICE -->
+        <div class="control-group">
+          <label>Color Palette Choice</label>
+          <div class="swatches">
+            <div class="swatch active" style="background:#ffe08a" data-c="#ffe08a" title="Butter Yellow"></div>
+            <div class="swatch" style="background:#ffb3c6" data-c="#ffb3c6" title="Sakura Pink"></div>
+            <div class="swatch" style="background:#b8e6ff" data-c="#b8e6ff" title="Sky Blue"></div>
+            <div class="swatch" style="background:#c8f5c1" data-c="#c8f5c1" title="Mint Green"></div>
+            <div class="swatch" style="background:#dcc7ff" data-c="#dcc7ff" title="Lavender"></div>
+            <div class="swatch" style="background:#232733" data-c="#232733" title="Cyber Dark"></div>
+            <div class="swatch" style="background:#ff9f43" data-c="#ff9f43" title="Warm Amber"></div>
+            <!-- Custom Color Picker -->
+            <label class="custom-color-btn" title="Pick any custom color">
+              🎨 <input type="color" id="customColorPicker" value="#ffe08a">
+            </label>
+          </div>
+        </div>
+
+        <!-- FONT SELECTION -->
+        <div class="control-row">
+          <div class="control-group flex-1">
+            <label>Font Family</label>
+            <select id="fontFamilySelect" class="custom-select">
+              <option value="'Inter', sans-serif">Inter (Clean Sans)</option>
+              <option value="'Space Grotesk', sans-serif">Space Grotesk (Tech)</option>
+              <option value="'Comic Neue', cursive">Comic Neue (Playful)</option>
+              <option value="'Fira Code', monospace">Fira Code (Code)</option>
+              <option value="'Playfair Display', serif">Playfair (Serif)</option>
+              <option value="'Poppins', sans-serif">Poppins (Modern)</option>
+            </select>
+          </div>
+          <div class="control-group">
+            <label>Font Size</label>
+            <select id="fontSizeSelect" class="custom-select">
+              <option value="13px">Small (13px)</option>
+              <option value="15px" selected>Medium (15px)</option>
+              <option value="18px">Large (18px)</option>
+              <option value="22px">Huge (22px)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- STICKY NOTE PREVIEW -->
+        <div class="sticky-preview-box" id="stickyPreview">
+          <textarea id="stickyText" placeholder="Write your note here... It syncs automatically!"></textarea>
+        </div>
+
+        <div class="row sticky-actions">
+          <button class="btn primary" id="stickyLaunchPip">🚀 Open Floating Sticky Window</button>
+          <button class="btn" id="stickyToggleMini">🔍 Mini Floating View</button>
+        </div>
+        <p id="stickyStatus" class="status-msg"></p>
+      </div>
+    </section>
+
+    <!-- FOCUS MODE VIEW -->
+    <section class="view" id="view-focus">
+      <div class="panel focus-panel">
+        <div class="focus-cat-header">
+          <img src="../assets/cat_normal.svg" id="focusCatAvatar" class="focus-cat-preview" alt="Cat Companion">
+          <div>
+            <div class="focus-status">
+              <div class="dot" id="focusDot"></div>
+              <span id="focusLabel">Fokas mode is OFF</span>
+            </div>
+            <p class="focus-sub">Whitelisted tabs stay quiet; forbidden tabs trigger siren!</p>
+          </div>
+        </div>
+
+        <div class="setrow" id="focusSetRow">
+          <div class="field" style="flex:1;">
+            <label>Session Duration (Minutes)</label>
+            <input type="number" id="focusMin" min="1" value="25">
+          </div>
+          <div class="field" style="flex:1;">
+            <label>Sound Effect</label>
+            <select id="focusSoundSelect" class="custom-select">
+              <option value="ios_sos_alarm.wav">🚨 iOS SOS Siren</option>
+              <option value="alert.mp3">🔊 Emergency Alert</option>
+              <option value="alert.wav">📣 Siren Chime</option>
+              <option value="chodu-cid.mp3" selected>🔥 Chodu CID Meme</option>
+              <option value="cid-made-with-Voicemod.mp3">🎧 CID Voicemod</option>
+              <option value="kya-cheda-bhosdi.mp3">🤬 Kya Cheda Bhosdi</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="clockface small" id="focusFace">25:00</div>
+        <p class="sub-info">
+          Select multiple allowed tabs above. Switching between whitelisted tabs keeps focus quiet. Switching to any unselected tab triggers the <strong>Siren Sound & Red SOS Banner</strong>!
+        </p>
+
+        <div class="row">
+          <button class="btn primary" id="focusStart">🐾 Start Fokas Cat Session</button>
+          <button class="btn danger" id="focusStop">Stop Session</button>
+        </div>
+
+        <div class="strike-box" id="strikeCount">Drifts Caught: 0</div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>made for people who mean to focus. 😼</footer>
+
+  <script src="popup.js"></script>
+</body>
+</html>

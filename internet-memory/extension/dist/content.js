@@ -1,0 +1,4 @@
+console.log(`Internet Memory content script loaded.`),chrome.runtime.onMessage.addListener((n,r,i)=>{if(n.action===`EXTRACT_DOM`){let n=t();i({textContent:e(),favicon:n})}return!0});function e(){let e=document.body.cloneNode(!0);[`script`,`style`,`noscript`,`iframe`,`header`,`footer`,`nav`,`aside`,`.sidebar`,`#sidebar`,`.ads`,`.advertisement`,`#comments`,`.comments`,`svg`,`form`,`button`].forEach(t=>{e.querySelectorAll(t).forEach(e=>e.remove())});let t=[];return e.querySelectorAll([`h1`,`h2`,`h3`,`p`,`li`,`article`].join(`,`)).forEach(e=>{let n=e.textContent?.trim();n&&n.length>25&&t.push(n)}),t.length===0&&e.innerText.split(`
+`).forEach(e=>{let n=e.trim();n.length>30&&t.push(n)}),t.join(`
+
+`).slice(0,15e3)}function t(){let e=``,t=document.querySelector(`link[rel~="icon"]`);return e=t&&t.href?t.href:`${window.location.origin}/favicon.ico`,e}

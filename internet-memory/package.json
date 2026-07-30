@@ -1,0 +1,17 @@
+{
+  "name": "internet-memory-workspace",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "client",
+    "extension",
+    "server",
+    "shared"
+  ],
+  "scripts": {
+    "client:dev": "npm run dev --workspace=client",
+    "client:build": "npm run build --workspace=client",
+    "server:dev": "npm run dev --workspace=server",
+    "server:build": "npm run build --workspace=server"
+  }
+}

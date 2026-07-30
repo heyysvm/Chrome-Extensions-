@@ -1,0 +1,53 @@
+{
+  "manifest_version": 3,
+  "name": "fokas. — Focus, Timer, Floating Notes & Cat Companion",
+  "version": "1.0.0",
+  "description": "Stay focused with customizable timers, stopwatches, frameless floating sticky notes with full color & font palettes, mini floating view, and cat tab navigation focus enforcer.",
+  "permissions": [
+    "storage",
+    "activeTab",
+    "scripting",
+    "alarms",
+    "tabs",
+    "offscreen",
+    "documentPictureInPicture",
+    "notifications"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "action": {
+    "default_popup": "popup/popup.html",
+    "default_title": "fokas.",
+    "default_icon": {
+      "16": "assets/icon16.png",
+      "48": "assets/icon48.png",
+      "128": "assets/icon128.png"
+    }
+  },
+  "background": {
+    "service_worker": "background/service-worker.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content/cat_widget.js"],
+      "css": ["content/cat_widget.css"],
+      "run_at": "document_idle"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "assets/*",
+        "offscreen/*"
+      ],
+      "matches": ["<all_urls>"]
+    }
+  ],
+  "icons": {
+    "16": "assets/icon16.png",
+    "48": "assets/icon48.png",
+    "128": "assets/icon128.png"
+  }
+}

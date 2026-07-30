@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>fokas. — Chrome Extension Preview</title>
+  <style>
+    body {
+      margin: 0;
+      background: #0d0f14;
+      color: #eef0f5;
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+    .container {
+      max-width: 680px;
+      text-align: center;
+      background: #191c26;
+      border: 1px solid #2b3040;
+      border-radius: 16px;
+      padding: 32px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+    }
+    h1 {
+      font-size: 36px;
+      margin: 0 0 10px;
+    }
+    h1 span { color: #ff7a45; }
+    p { color: #8b8fa3; font-size: 15px; line-height: 1.6; margin-bottom: 24px; }
+    .steps {
+      text-align: left;
+      background: #12141a;
+      border: 1px solid #2b3040;
+      border-radius: 12px;
+      padding: 20px 24px;
+      margin-bottom: 24px;
+    }
+    .steps ol { margin: 0; padding-left: 20px; color: #d0d5e2; }
+    .steps li { margin-bottom: 10px; line-height: 1.5; }
+    .btn {
+      display: inline-block;
+      background: #ff7a45;
+      color: #1a1108;
+      font-weight: 700;
+      padding: 12px 24px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-size: 15px;
+      transition: filter 0.15s;
+    }
+    .btn:hover { filter: brightness(1.1); }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>fok<span>as</span>. Extension Ready</h1>
+    <p>Your official Chrome Extension (Manifest V3) has been built with all features requested!</p>
+
+    <div class="steps">
+      <h3>🚀 How to Load in Google Chrome:</h3>
+      <ol>
+        <li>Open Chrome and navigate to <strong>chrome://extensions</strong></li>
+        <li>Enable <strong>Developer mode</strong> (toggle switch in upper right corner).</li>
+        <li>Click <strong>Load unpacked</strong> button.</li>
+        <li>Select this project folder: <code>c:\Users\Shivam\OneDrive\Documents\Fokas</code></li>
+        <li>Pin <strong>fokas.</strong> to your toolbar! 🐾</li>
+      </ol>
+    </div>
+
+    <a href="popup/popup.html" target="_blank" class="btn">Launch Extension Popup Preview</a>
+  </div>
+</body>
+</html>
