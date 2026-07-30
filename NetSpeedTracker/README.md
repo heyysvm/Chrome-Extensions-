@@ -1,6 +1,18 @@
-# ⚡ NetSpeedTracker — Chrome Extension
+# ⚡ NetSpeedTracker — Real-Time Network Monitor
 
 Real-time network speed overlay for every tab — accurate like fast.com, always visible.
+
+---
+
+## ⚡ Direct 1-Click Download
+
+Click the badge or link below to download the ready-to-install extension `.zip`:
+
+[![Download NetSpeedTracker](https://img.shields.io/badge/📥_Download_NetSpeedTracker-ZIP-blue?style=for-the-badge&logo=googlechrome)](https://github.com/heyysvm/Chrome-Extensions-/raw/main/NetSpeedTracker-v1.0.0.zip)
+
+- 📥 **Direct Download Link**: [https://github.com/heyysvm/Chrome-Extensions-/raw/main/NetSpeedTracker-v1.0.0.zip](https://github.com/heyysvm/Chrome-Extensions-/raw/main/NetSpeedTracker-v1.0.0.zip)
+
+---
 
 ## Features
 
@@ -12,6 +24,8 @@ Real-time network speed overlay for every tab — accurate like fast.com, always
 - **Quality rating** — Very Slow → Slow → Good → Fast → Very Fast → Ultra Fast
 - **Peak & Average speed** tracking
 - **Popup panel** — click the extension icon for a summary view
+
+---
 
 ## How It Works (fast.com approach)
 
@@ -29,29 +43,18 @@ Speed (Mbps) = (bytes_received × 8) / (elapsed_seconds × 1,000,000)
 
 Results are averaged and updated every 2 seconds.
 
+---
+
 ## Installation
 
-1. Open Chrome and go to `chrome://extensions/`
-2. Enable **Developer Mode** (top-right toggle)
-3. Click **"Load unpacked"**
-4. Select the `NetSpeedTracker` folder
-5. The overlay will appear on your next tab load ✓
+1. Download and extract [NetSpeedTracker-v1.0.0.zip](https://github.com/heyysvm/Chrome-Extensions-/raw/main/NetSpeedTracker-v1.0.0.zip).
+2. Open Chrome and go to `chrome://extensions/`
+3. Enable **Developer Mode** (top-right toggle)
+4. Click **"Load unpacked"**
+5. Select the extracted `NetSpeedTracker` folder
+6. Done! ✓
 
-## File Structure
-
-```
-NetSpeedTracker/
-├── manifest.json      — Extension config (Manifest V3)
-├── background.js      — Speed measurement engine (service worker)
-├── content.js         — Overlay injected into every tab
-├── overlay.css        — Overlay styles
-├── popup.html         — Toolbar popup UI
-├── popup.js           — Popup logic
-└── icons/
-    ├── icon16.png
-    ├── icon48.png
-    └── icon128.png
-```
+---
 
 ## Permissions Used
 
@@ -61,14 +64,3 @@ NetSpeedTracker/
 | `tabs` | Broadcast speed updates to all open tabs |
 | `scripting` | Inject overlay into tabs |
 | `<all_urls>` | Show overlay on every website |
-
-## Speed Quality Thresholds
-
-| Speed | Rating |
-|-------|--------|
-| < 1 Mbps | Very Slow 🔴 |
-| 1–5 Mbps | Slow 🟠 |
-| 5–25 Mbps | Good 🟡 |
-| 25–100 Mbps | Fast 🟢 |
-| 100–500 Mbps | Very Fast 💚 |
-| > 500 Mbps | Ultra Fast 🔵 |
