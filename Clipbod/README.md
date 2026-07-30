@@ -1,6 +1,6 @@
-# OmniBoard — Floating Clipboard & Snippet Power-Tool
+# Clipbod — Floating Clipboard & Snippet Power-Tool
 
-OmniBoard is a Chrome Extension that automatically captures copied text, links, code snippets, and colors across the web, giving you a frameless floating Picture-in-Picture (PIP) clipboard manager, 1-click text transformers, and persistent local storage.
+Clipbod is a Chrome Extension that automatically captures copied text, links, code snippets, and colors across the web, giving you a frameless floating Picture-in-Picture (PIP) clipboard manager, 1-click text transformers, and persistent local storage.
 
 ---
 
@@ -8,13 +8,13 @@ OmniBoard is a Chrome Extension that automatically captures copied text, links, 
 
 ### Direct ZIP Download
 Download the pre-packaged extension ZIP:
-- **Direct Download Link**: [OmniBoard-v1.0.0.zip](https://github.com/heyysvm/Chrome-Extensions-/raw/main/OmniBoard-v1.0.0.zip)
+- **Direct Download Link**: [Clipbod-v1.0.0.zip](https://github.com/heyysvm/Chrome-Extensions-/raw/main/Clipbod-v1.0.0.zip)
 
 ### Installation Steps:
-1. Download and extract [OmniBoard-v1.0.0.zip](https://github.com/heyysvm/Chrome-Extensions-/raw/main/OmniBoard-v1.0.0.zip).
+1. Download and extract [Clipbod-v1.0.0.zip](https://github.com/heyysvm/Chrome-Extensions-/raw/main/Clipbod-v1.0.0.zip).
 2. Open Google Chrome and navigate to `chrome://extensions/`.
 3. Toggle **Developer mode** to **ON** in the top-right corner.
-4. Click **Load unpacked** (top left) and select the extracted `OmniBoard` folder.
+4. Click **Load unpacked** (top left) and select the extracted `Clipbod` folder.
 
 ---
 

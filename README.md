@@ -10,7 +10,7 @@ Click any link below to download the ready-to-install ZIP archive for Google Chr
 
 | Extension Name | Core Description | Direct Download |
 | :--- | :--- | :---: |
-| **OmniBoard** | Floating Picture-in-Picture Clipboard Manager & Text Transformer | [Download OmniBoard ZIP](https://github.com/heyysvm/Chrome-Extensions-/raw/main/OmniBoard-v1.0.0.zip) |
+| **Clipbod** | Floating Picture-in-Picture Clipboard Manager & Text Transformer | [Download Clipbod ZIP](https://github.com/heyysvm/Chrome-Extensions-/raw/main/Clipbod-v1.0.0.zip) |
 | **Fokas** | Focus Timer, Floating Sticky Note & Cat Tab Enforcer | [Download Fokas ZIP](https://github.com/heyysvm/Chrome-Extensions-/raw/main/Fokas-v1.0.0.zip) |
 | **NetSpeedTracker** | Real-Time Network Speedometer & Data Monitor | [Download NetSpeedTracker ZIP](https://github.com/heyysvm/Chrome-Extensions-/raw/main/NetSpeedTracker-v1.0.0.zip) |
 | **Notes_ext** | Quick Sticky Notes & Code Snippets Pad | [Download Notes_ext ZIP](https://github.com/heyysvm/Chrome-Extensions-/raw/main/Notes_ext-v1.0.0.zip) |
@@ -32,11 +32,11 @@ Click any link below to download the ready-to-install ZIP archive for Google Chr
 
 ## Suite Overview
 
-### 1. [OmniBoard](./OmniBoard) — Floating PIP Clipboard & Snippet Power-Tool
+### 1. [Clipbod](./Clipbod) — Floating PIP Clipboard & Snippet Power-Tool
 
 A persistent Picture-in-Picture clipboard manager that automatically captures copied text, code snippets, URLs, JSON, and hex colors across the web with 1-click text transformers.
 
-- **Direct Download**: [OmniBoard-v1.0.0.zip](https://github.com/heyysvm/Chrome-Extensions-/raw/main/OmniBoard-v1.0.0.zip)
+- **Direct Download**: [Clipbod-v1.0.0.zip](https://github.com/heyysvm/Chrome-Extensions-/raw/main/Clipbod-v1.0.0.zip)
 - **Key Features**:
   - **Frameless Floating PIP Window**: Stays pinned over desktop applications.
   - **Continuous Local Capture**: Automatically saves copied items into persistent Chrome local storage.
@@ -50,10 +50,6 @@ A persistent Picture-in-Picture clipboard manager that automatically captures co
 A comprehensive focus enforcer featuring tab whitelist rules, full-screen SOS red overlay, customizable meme sound effects, countdown timers, and floating sticky notes.
 
 - **Direct Download**: [Fokas-v1.0.0.zip](https://github.com/heyysvm/Chrome-Extensions-/raw/main/Fokas-v1.0.0.zip)
-- **Key Features**:
-  - **Tab Whitelist Enforcer**: Restricts tab switching during focus sessions with full-screen overlay protection.
-  - **Custom Sound Effects**: Configurable audio notification options (`Chodu CID`, `ACP Kyu Re Maderchod`, `CID Pradyuman Bhenchod`, `iOS SOS Alarm`).
-  - **Frameless Sticky Note**: Drag-and-drop Picture-in-Picture sticky note with custom color and font typography controls.
 
 ---
 
@@ -62,9 +58,6 @@ A comprehensive focus enforcer featuring tab whitelist rules, full-screen SOS re
 A real-time network throughput and speed monitoring extension designed like fast.com.
 
 - **Direct Download**: [NetSpeedTracker-v1.0.0.zip](https://github.com/heyysvm/Chrome-Extensions-/raw/main/NetSpeedTracker-v1.0.0.zip)
-- **Key Features**:
-  - **Live Speed Probes**: Measures throughput via parallel CDN streams.
-  - **Always-on-Top Overlay**: Draggable widget displaying live Mbps graph and latency.
 
 ---
 
@@ -73,9 +66,6 @@ A real-time network throughput and speed monitoring extension designed like fast
 An ultra-lightweight sticky note pad for instant thoughts, links, and code snippets.
 
 - **Direct Download**: [Notes_ext-v1.0.0.zip](https://github.com/heyysvm/Chrome-Extensions-/raw/main/Notes_ext-v1.0.0.zip)
-- **Key Features**:
-  - Auto-save local storage persistence.
-  - Minimalist, distraction-free interface.
 
 ---
 
@@ -84,6 +74,3 @@ An ultra-lightweight sticky note pad for instant thoughts, links, and code snipp
 A semantic search engine and RAG AI assistant over your personal browsing history.
 
 - **Direct Download**: [internet-memory-v1.0.0.zip](https://github.com/heyysvm/Chrome-Extensions-/raw/main/internet-memory-v1.0.0.zip)
-- **Key Features**:
-  - Semantic vector search over past browsing sessions.
-  - Interactive AI Q&A over visited web articles.

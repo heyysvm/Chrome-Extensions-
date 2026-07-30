@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "OmniBoard — Floating Clipboard & Snippet Power-Tool",
+  "name": "Clipbod — Floating Clipboard & Snippet Power-Tool",
   "version": "1.0.0",
   "description": "Frameless floating Picture-in-Picture clipboard manager, code snippet converter, AI prompt launcher, and text transformer.",
   "permissions": [
@@ -16,7 +16,7 @@
   ],
   "action": {
     "default_popup": "popup/popup.html",
-    "default_title": "OmniBoard",
+    "default_title": "Clipbod",
     "default_icon": {
       "16": "assets/icon16.png",
       "48": "assets/icon48.png",

@@ -5,7 +5,7 @@ chrome.runtime.onInstalled.addListener(() => {
         omniClips: [
           {
             id: 'welcome_1',
-            text: 'Welcome to OmniBoard! 🚀 Anything you copy on any website will automatically save here.',
+            text: 'Welcome to Clipbod! Anything you copy on any website will automatically save here.',
             type: 'text',
             timestamp: Date.now(),
             pinned: true

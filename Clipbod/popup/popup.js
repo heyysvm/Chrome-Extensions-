@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function copyToClipboard(text) {
     navigator.clipboard.writeText(text).then(() => {
-      showToastNotification('📋 Copied to Clipboard!');
+      showToastNotification('Copied to Clipboard');
     }).catch(() => {});
   }
 
@@ -72,7 +72,7 @@ document.addEventListener('DOMContentLoaded', () => {
       filtered = filtered.filter(c => c.text.toLowerCase().includes(q));
     }
 
-    clipCount.textContent = `${filtered.length} clips in local storage`;
+    clipCount.textContent = `${filtered.length} clips in storage`;
 
     if (filtered.length === 0) {
       emptyState.style.display = 'flex';
@@ -107,9 +107,9 @@ document.addEventListener('DOMContentLoaded', () => {
         </div>
         ${bodyContent}
         <div class="clip-actions">
-          <button class="action-icon-btn copy" title="Copy item to Clipboard">📋 Copy Item</button>
-          <button class="action-icon-btn pin ${clip.pinned ? 'active' : ''}" title="${clip.pinned ? 'Unpin' : 'Pin'}">📌</button>
-          <button class="action-icon-btn delete" title="Delete Clip">🗑️ Delete</button>
+          <button class="action-icon-btn copy" title="Copy item to Clipboard">Copy Item</button>
+          <button class="action-icon-btn pin ${clip.pinned ? 'active' : ''}" title="${clip.pinned ? 'Unpin' : 'Pin'}">${clip.pinned ? 'Pinned' : 'Pin'}</button>
+          <button class="action-icon-btn delete" title="Delete Clip">Delete</button>
         </div>
       `;
 
@@ -165,7 +165,7 @@ document.addEventListener('DOMContentLoaded', () => {
         searchInput.value = '';
         searchQuery = '';
         loadClips();
-        showToastNotification('Clip Saved!');
+        showToastNotification('Clip Saved');
       }
     });
   });
@@ -215,7 +215,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const parsed = JSON.parse(text);
             transformed = JSON.stringify(parsed, null, 2);
           } catch (e) {
-            showToastNotification('⚠️ Invalid JSON');
+            showToastNotification('Invalid JSON');
             return;
           }
         } else if (type === 'ai_refactor') {
@@ -272,7 +272,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       pipWindow.document.body.innerHTML = `
         <div class="pip-header">
-          <span>📋 OmniBoard Floating</span>
+          <span>Clipbod Floating</span>
         </div>
         <div class="pip-list" id="pipList"></div>
       `;
@@ -290,16 +290,16 @@ document.addEventListener('DOMContentLoaded', () => {
               <div class="pip-card-type">${c.type}</div>
               <div class="pip-card-text">${escapeHtml(c.text)}</div>
               <div class="pip-card-actions">
-                <button class="pip-btn pip-copy">📋 Copy Item</button>
-                <button class="pip-btn pip-del">🗑️ Delete</button>
+                <button class="pip-btn pip-copy">Copy Item</button>
+                <button class="pip-btn pip-del">Delete</button>
               </div>
             `;
 
             card.querySelector('.pip-copy').addEventListener('click', (e) => {
               e.stopPropagation();
               navigator.clipboard.writeText(c.text);
-              card.querySelector('.pip-copy').textContent = '✓ Copied!';
-              setTimeout(() => { card.querySelector('.pip-copy').textContent = '📋 Copy Item'; }, 1200);
+              card.querySelector('.pip-copy').textContent = 'Copied!';
+              setTimeout(() => { card.querySelector('.pip-copy').textContent = 'Copy Item'; }, 1200);
             });
 
             card.querySelector('.pip-del').addEventListener('click', (e) => {

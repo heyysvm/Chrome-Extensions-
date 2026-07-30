@@ -2,10 +2,10 @@
   let toastTimeout = null;
 
   function showToast(msg) {
-    let toast = document.getElementById('omni-toast');
+    let toast = document.getElementById('clipbod-toast');
     if (!toast) {
       toast = document.createElement('div');
-      toast.id = 'omni-toast';
+      toast.id = 'clipbod-toast';
       document.body.appendChild(toast);
     }
     toast.textContent = msg;
@@ -35,7 +35,7 @@
         if (sel && sel.toString().trim()) {
           chrome.runtime.sendMessage({ action: 'ADD_CLIP', text: sel.toString() }, (res) => {
             if (res && res.status === 'added') {
-              showToast('📋 Saved to OmniBoard');
+              showToast('Saved to Clipbod');
             }
           });
         }
@@ -46,7 +46,7 @@
     if (copiedText && copiedText.trim().length > 0) {
       chrome.runtime.sendMessage({ action: 'ADD_CLIP', text: copiedText }, (res) => {
         if (res && res.status === 'added') {
-          showToast('📋 Saved to OmniBoard');
+          showToast('Saved to Clipbod');
         }
       });
     }

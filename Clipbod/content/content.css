@@ -1,4 +1,4 @@
-#omni-toast {
+#clipbod-toast {
   position: fixed !important;
   bottom: 24px !important;
   right: 24px !important;
@@ -19,7 +19,7 @@
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
 }
 
-#omni-toast.show {
+#clipbod-toast.show {
   opacity: 1 !important;
   transform: translateY(0) scale(1) !important;
 }
