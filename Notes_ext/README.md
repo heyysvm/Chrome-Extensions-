@@ -1,16 +1,14 @@
-# 📝 Notes_ext — Quick Sticky Notes Extension
+# Notes_ext — Quick Sticky Notes Extension
 
 Ultra-lightweight sticky notes extension for Chrome for writing instant notes, code snippets, and to-do lists.
 
 ---
 
-## ⚡ Direct 1-Click Download
+## Direct Download & Installation
 
-Click the badge or link below to download the ready-to-install extension `.zip`:
-
-[![Download Notes_ext](https://img.shields.io/badge/📥_Download_Notes_ext-ZIP-orange?style=for-the-badge&logo=googlechrome)](https://github.com/heyysvm/Chrome-Extensions-/raw/main/Notes_ext-v1.0.0.zip)
-
-- 📥 **Direct Download Link**: [https://github.com/heyysvm/Chrome-Extensions-/raw/main/Notes_ext-v1.0.0.zip](https://github.com/heyysvm/Chrome-Extensions-/raw/main/Notes_ext-v1.0.0.zip)
+### Direct ZIP Download
+Download the pre-packaged extension ZIP:
+- **Direct Download Link**: [Notes_ext-v1.0.0.zip](https://github.com/heyysvm/Chrome-Extensions-/raw/main/Notes_ext-v1.0.0.zip)
 
 ---
 
@@ -22,7 +20,7 @@ Click the badge or link below to download the ready-to-install extension `.zip`:
 
 ---
 
-## Installation
+## Installation Steps:
 
 1. Download and extract [Notes_ext-v1.0.0.zip](https://github.com/heyysvm/Chrome-Extensions-/raw/main/Notes_ext-v1.0.0.zip).
 2. Open Chrome and navigate to `chrome://extensions/`.
