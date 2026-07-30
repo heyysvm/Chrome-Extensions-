@@ -64,12 +64,8 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 
     chrome.storage.local.get(['omniClips'], (res) => {
       let clips = res.omniClips || [];
-      
-      if (clips.length > 0 && clips[0].text === text) {
-        sendResponse({ status: 'duplicate' });
-        return;
-      }
 
+      // Remove existing instance if present so it moves to top
       clips = clips.filter(c => c.text !== text);
 
       const newClip = {

@@ -31,45 +31,39 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function loadClips() {
     chrome.storage.local.get(['omniClips'], (res) => {
-      const clips = (res && res.omniClips) ? res.omniClips : [];
-      allClips = clips;
+      allClips = (res && res.omniClips) ? res.omniClips : [];
       renderClips();
     });
   }
 
-  function autoSyncClipboardOnOpen() {
+  function syncClipboardOnOpen() {
     if (navigator.clipboard && navigator.clipboard.readText) {
       navigator.clipboard.readText().then(text => {
-        if (text && text.trim()) {
-          const clean = text.trim();
-          if (allClips.length === 0 || allClips[0].text !== clean) {
-            chrome.runtime.sendMessage({ action: 'ADD_CLIP', text: clean }, () => {
-              loadClips();
-            });
-          }
-        }
+        if (!text || !text.trim()) return;
+        const clean = text.trim();
+        chrome.runtime.sendMessage({ action: 'ADD_CLIP', text: clean }, () => {
+          loadClips();
+        });
       }).catch(() => {});
     }
   }
 
-  // Real-time Storage Listener
+  // Real-time Storage Listener - Unconditional Reload & Render
   chrome.storage.onChanged.addListener((changes, area) => {
-    if (area === 'local' && changes.omniClips) {
-      allClips = changes.omniClips.newValue || [];
-      renderClips();
+    if (area === 'local') {
+      loadClips();
     }
   });
 
   // Real-time Runtime Message Listener
   chrome.runtime.onMessage.addListener((msg) => {
-    if (msg.action === 'CLIP_UPDATED' && msg.clips) {
-      allClips = msg.clips;
-      renderClips();
+    if (msg.action === 'CLIP_UPDATED') {
+      loadClips();
     }
   });
 
-  // Poll fallback
-  setInterval(loadClips, 1000);
+  // Poll fallback every 800ms
+  setInterval(loadClips, 800);
 
   function formatTime(ts) {
     const sec = Math.floor((Date.now() - ts) / 1000);
@@ -189,7 +183,7 @@ document.addEventListener('DOMContentLoaded', () => {
     chrome.storage.local.get(['omniClips'], (res) => {
       let clips = res.omniClips || [];
       clips = clips.map(c => c.id === id ? { ...c, pinned: !c.pinned } : c);
-      chrome.storage.local.set({ omniClips: clips });
+      chrome.storage.local.set({ omniClips: clips }, loadClips);
     });
   }
 
@@ -197,7 +191,7 @@ document.addEventListener('DOMContentLoaded', () => {
     chrome.storage.local.get(['omniClips'], (res) => {
       let clips = res.omniClips || [];
       clips = clips.filter(c => c.id !== id);
-      chrome.storage.local.set({ omniClips: clips });
+      chrome.storage.local.set({ omniClips: clips }, loadClips);
     });
   }
 
@@ -243,14 +237,14 @@ document.addEventListener('DOMContentLoaded', () => {
       chrome.storage.local.get(['omniClips'], (res) => {
         let clips = res.omniClips || [];
         clips = clips.filter(c => c.pinned);
-        chrome.storage.local.set({ omniClips: clips });
+        chrome.storage.local.set({ omniClips: clips }, loadClips);
       });
     });
   }
 
   if (clearAllBtn) {
     clearAllBtn.addEventListener('click', () => {
-      chrome.storage.local.set({ omniClips: [] });
+      chrome.storage.local.set({ omniClips: [] }, loadClips);
     });
   }
 
@@ -374,7 +368,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       renderPipList();
       const storageListener = (changes, area) => {
-        if (area === 'local' && changes.omniClips) {
+        if (area === 'local') {
           renderPipList();
         }
       };
@@ -386,5 +380,5 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   loadClips();
-  setTimeout(autoSyncClipboardOnOpen, 50);
+  syncClipboardOnOpen();
 });
