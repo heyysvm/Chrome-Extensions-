@@ -1,5 +1,6 @@
 (function () {
   let toastTimeout = null;
+  let lastCapturedText = '';
 
   function showToast(msg) {
     let toast = document.getElementById('clipbod-toast');
@@ -17,38 +18,53 @@
     }, 1800);
   }
 
+  function captureAndSave(text) {
+    if (!text) return;
+    const clean = text.trim();
+    if (!clean || clean === lastCapturedText) return;
+    
+    lastCapturedText = clean;
+    chrome.runtime.sendMessage({ action: 'ADD_CLIP', text: clean }, (res) => {
+      if (res && res.status === 'added') {
+        showToast('Saved to Clipbod');
+      }
+    });
+  }
+
   document.addEventListener('copy', (e) => {
-    let copiedText = '';
-    
+    let text = '';
     if (e.clipboardData && typeof e.clipboardData.getData === 'function') {
-      copiedText = e.clipboardData.getData('text/plain');
+      text = e.clipboardData.getData('text/plain');
     }
-    
-    if (!copiedText) {
+    if (!text) {
       const sel = window.getSelection();
-      if (sel) copiedText = sel.toString();
+      if (sel) text = sel.toString();
+    }
+    if (!text && document.activeElement && (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA')) {
+      const el = document.activeElement;
+      if (typeof el.selectionStart === 'number' && typeof el.selectionEnd === 'number') {
+        text = el.value.substring(el.selectionStart, el.selectionEnd);
+      }
     }
 
-    if (!copiedText || !copiedText.trim()) {
+    if (text) {
+      captureAndSave(text);
+    } else {
       setTimeout(() => {
         const sel = window.getSelection();
-        if (sel && sel.toString().trim()) {
-          chrome.runtime.sendMessage({ action: 'ADD_CLIP', text: sel.toString() }, (res) => {
-            if (res && res.status === 'added') {
-              showToast('Saved to Clipbod');
-            }
-          });
+        if (sel && sel.toString()) captureAndSave(sel.toString());
+      }, 40);
+    }
+  }, true);
+
+  document.addEventListener('keydown', (e) => {
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'c') {
+      setTimeout(() => {
+        const sel = window.getSelection();
+        if (sel && sel.toString()) {
+          captureAndSave(sel.toString());
         }
       }, 50);
-      return;
     }
-
-    if (copiedText && copiedText.trim().length > 0) {
-      chrome.runtime.sendMessage({ action: 'ADD_CLIP', text: copiedText }, (res) => {
-        if (res && res.status === 'added') {
-          showToast('Saved to Clipbod');
-        }
-      });
-    }
-  });
+  }, true);
 })();

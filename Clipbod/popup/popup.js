@@ -23,6 +23,14 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // Instant real-time UI update when storage changes
+  chrome.storage.onChanged.addListener((changes, area) => {
+    if (area === 'local' && changes.omniClips) {
+      allClips = changes.omniClips.newValue || [];
+      renderClips();
+    }
+  });
+
   function formatTime(ts) {
     const sec = Math.floor((Date.now() - ts) / 1000);
     if (sec < 60) return 'just now';
@@ -313,8 +321,13 @@ document.addEventListener('DOMContentLoaded', () => {
       };
 
       renderPipList();
-      const intId = setInterval(renderPipList, 2500);
-      pipWindow.addEventListener('pagehide', () => clearInterval(intId));
+      const storageListener = (changes, area) => {
+        if (area === 'local' && changes.omniClips) {
+          renderPipList();
+        }
+      };
+      chrome.storage.onChanged.addListener(storageListener);
+      pipWindow.addEventListener('pagehide', () => chrome.storage.onChanged.removeListener(storageListener));
     } catch (err) {
       showToastNotification('Could not open PIP Window');
     }
