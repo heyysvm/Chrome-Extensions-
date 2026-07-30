@@ -14,25 +14,39 @@ document.addEventListener('DOMContentLoaded', () => {
   const filterTabs = document.querySelectorAll('.filter-tabs .tab-btn');
   const transformBtns = document.querySelectorAll('.transform-btn');
 
+  function detectType(text) {
+    if (!text) return 'text';
+    const trimmed = text.trim();
+    if (/^https?:\/\/[^\s]+$/i.test(trimmed)) return 'url';
+    if (/^#(?:[0-9a-fA-F]{3}){1,2}$|^rgb\(\s*\d+\s*,\s*\d+\s*,\s*\d+\s*\)$/i.test(trimmed)) return 'color';
+    if ((trimmed.startsWith('{') && trimmed.endsWith('}')) || (trimmed.startsWith('[') && trimmed.endsWith(']'))) {
+      try {
+        JSON.parse(trimmed);
+        return 'json';
+      } catch (e) {}
+    }
+    if (/\b(const|let|var|function|def|import|export|class|if|return|<html|<\/)\b/.test(trimmed)) return 'code';
+    return 'text';
+  }
+
   function loadClips() {
     chrome.storage.local.get(['omniClips'], (res) => {
       const clips = (res && res.omniClips) ? res.omniClips : [];
-      if (JSON.stringify(clips) !== JSON.stringify(allClips)) {
-        allClips = clips;
-        renderClips();
-      }
+      allClips = clips;
+      renderClips();
     });
   }
 
-  function syncSystemClipboard() {
+  function autoSyncClipboardOnOpen() {
     if (navigator.clipboard && navigator.clipboard.readText) {
       navigator.clipboard.readText().then(text => {
-        if (!text || !text.trim()) return;
-        const clean = text.trim();
-        if (allClips.length === 0 || allClips[0].text !== clean) {
-          chrome.runtime.sendMessage({ action: 'ADD_CLIP', text: clean }, () => {
-            loadClips();
-          });
+        if (text && text.trim()) {
+          const clean = text.trim();
+          if (allClips.length === 0 || allClips[0].text !== clean) {
+            chrome.runtime.sendMessage({ action: 'ADD_CLIP', text: clean }, () => {
+              loadClips();
+            });
+          }
         }
       }).catch(() => {});
     }
@@ -54,7 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Safety net poll every 1 second
+  // Poll fallback
   setInterval(loadClips, 1000);
 
   function formatTime(ts) {
@@ -372,5 +386,5 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   loadClips();
-  syncSystemClipboard();
+  setTimeout(autoSyncClipboardOnOpen, 50);
 });
