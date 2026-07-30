@@ -1,7 +1,7 @@
 let nagTimer = null;
 
 chrome.runtime.onInstalled.addListener(() => {
-  chrome.storage.local.get(['fokasFocusState', 'fokasStickyNote'], (res) => {
+  chrome.storage.local.get(['fokasFocusState', 'fokasStickyNote', 'fokasSelectedSound'], (res) => {
     if (!res.fokasFocusState) {
       chrome.storage.local.set({
         fokasFocusState: {
@@ -27,13 +27,16 @@ chrome.runtime.onInstalled.addListener(() => {
         }
       });
     }
+    if (!res.fokasSelectedSound) {
+      chrome.storage.local.set({ fokasSelectedSound: 'chodu-cid.mp3' });
+    }
   });
 });
 
 async function playOffscreenAlarm(customSoundFile) {
   try {
     const data = await chrome.storage.local.get(['fokasSelectedSound']);
-    const chosenSound = customSoundFile || data.fokasSelectedSound || 'ios_sos_alarm.wav';
+    const chosenSound = customSoundFile || data.fokasSelectedSound || 'chodu-cid.mp3';
 
     const existing = await chrome.offscreen.hasDocument();
     if (!existing) {
@@ -45,17 +48,13 @@ async function playOffscreenAlarm(customSoundFile) {
       await new Promise(resolve => setTimeout(resolve, 150));
     }
 
-    const sendMsg = () => {
-      chrome.runtime.sendMessage({ action: 'OFFSCREEN_PLAY_ALARM', soundFile: chosenSound }, (res) => {
-        if (chrome.runtime.lastError || !res) {
-          setTimeout(() => {
-            chrome.runtime.sendMessage({ action: 'OFFSCREEN_PLAY_ALARM', soundFile: chosenSound }).catch(() => {});
-          }, 200);
-        }
-      });
-    };
-
-    sendMsg();
+    chrome.runtime.sendMessage({ action: 'OFFSCREEN_PLAY_ALARM', soundFile: chosenSound }, (res) => {
+      if (chrome.runtime.lastError || !res) {
+        setTimeout(() => {
+          chrome.runtime.sendMessage({ action: 'OFFSCREEN_PLAY_ALARM', soundFile: chosenSound }).catch(() => {});
+        }, 250);
+      }
+    });
   } catch (err) {
     console.log('Offscreen audio error:', err);
   }
