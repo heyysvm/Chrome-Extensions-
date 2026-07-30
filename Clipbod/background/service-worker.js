@@ -1,26 +1,53 @@
+async function setupOffscreenDocument() {
+  if (await chrome.offscreen.hasDocument()) return;
+  try {
+    await chrome.offscreen.createDocument({
+      url: 'offscreen/offscreen.html',
+      reasons: ['CLIPBOARD'],
+      justification: 'Continuously monitor system clipboard changes in real time for Clipbod'
+    });
+  } catch (e) {}
+}
+
+function injectContentScripts() {
+  chrome.tabs.query({ url: ['http://*/*', 'https://*/*'] }, (tabs) => {
+    for (const tab of tabs) {
+      if (!tab.id) continue;
+      chrome.scripting.executeScript({
+        target: { tabId: tab.id, allFrames: true },
+        files: ['content/content.js']
+      }).catch(() => {});
+      chrome.scripting.insertCSS({
+        target: { tabId: tab.id },
+        files: ['content/content.css']
+      }).catch(() => {});
+    }
+  });
+}
+
 chrome.runtime.onInstalled.addListener(() => {
+  setupOffscreenDocument();
+  injectContentScripts();
+
   chrome.storage.local.get(['omniClips'], (res) => {
     if (!res.omniClips) {
       chrome.storage.local.set({
         omniClips: [
           {
             id: 'welcome_1',
-            text: 'Welcome to Clipbod! Anything you copy on any website will automatically save here.',
+            text: 'Welcome to Clipbod! Anything you copy on any website or desktop app automatically saves here.',
             type: 'text',
             timestamp: Date.now(),
             pinned: true
-          },
-          {
-            id: 'welcome_2',
-            text: 'Copy multiple items continuously while browsing, then use them one by one anytime!',
-            type: 'text',
-            timestamp: Date.now() - 1000,
-            pinned: false
           }
         ]
       });
     }
   });
+});
+
+chrome.runtime.onStartup.addListener(() => {
+  setupOffscreenDocument();
 });
 
 function detectType(text) {
@@ -65,7 +92,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       };
 
       clips.unshift(newClip);
-      if (clips.length > 250) clips = clips.slice(0, 250);
+      if (clips.length > 300) clips = clips.slice(0, 300);
 
       chrome.storage.local.set({ omniClips: clips }, () => {
         sendResponse({ status: 'added', clip: newClip });
