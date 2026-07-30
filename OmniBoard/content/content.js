@@ -14,21 +14,41 @@
     if (toastTimeout) clearTimeout(toastTimeout);
     toastTimeout = setTimeout(() => {
       toast.classList.remove('show');
-    }, 2000);
+    }, 1800);
   }
 
-  document.addEventListener('copy', () => {
-    setTimeout(async () => {
-      try {
-        const selection = window.getSelection().toString();
-        if (selection && selection.trim().length > 0) {
-          chrome.runtime.sendMessage({ action: 'ADD_CLIP', text: selection }, (res) => {
+  document.addEventListener('copy', (e) => {
+    let copiedText = '';
+    
+    if (e.clipboardData && typeof e.clipboardData.getData === 'function') {
+      copiedText = e.clipboardData.getData('text/plain');
+    }
+    
+    if (!copiedText) {
+      const sel = window.getSelection();
+      if (sel) copiedText = sel.toString();
+    }
+
+    if (!copiedText || !copiedText.trim()) {
+      setTimeout(() => {
+        const sel = window.getSelection();
+        if (sel && sel.toString().trim()) {
+          chrome.runtime.sendMessage({ action: 'ADD_CLIP', text: sel.toString() }, (res) => {
             if (res && res.status === 'added') {
               showToast('📋 Saved to OmniBoard');
             }
           });
         }
-      } catch (e) {}
-    }, 50);
+      }, 50);
+      return;
+    }
+
+    if (copiedText && copiedText.trim().length > 0) {
+      chrome.runtime.sendMessage({ action: 'ADD_CLIP', text: copiedText }, (res) => {
+        if (res && res.status === 'added') {
+          showToast('📋 Saved to OmniBoard');
+        }
+      });
+    }
   });
 })();

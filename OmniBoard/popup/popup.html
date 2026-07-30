@@ -62,15 +62,18 @@
   <main class="clip-container" id="clipList"></main>
 
   <div id="emptyState" class="empty-state">
-    <div class="empty-icon">📂</div>
-    <p>No clips saved yet.</p>
-    <span class="empty-sub">Copy text anywhere on the web to auto-save to OmniBoard!</span>
+    <div class="empty-icon">📋</div>
+    <p>No saved clips in Chrome Storage.</p>
+    <span class="empty-sub">Copy anything on any website — OmniBoard automatically saves all copied items continuously!</span>
   </div>
 
-  <!-- FOOTER STATS & CLEAR -->
+  <!-- FOOTER STATS & CLEAR OPTIONS -->
   <footer>
     <span id="clipCount">0 clips saved</span>
-    <button id="clearAllBtn" class="btn-clear" title="Clear unpinned clips">Clear Unpinned</button>
+    <div class="footer-btns">
+      <button id="clearUnpinnedBtn" class="btn-clear" title="Clear unpinned clips">Clear Unpinned</button>
+      <button id="clearAllBtn" class="btn-clear danger" title="Clear all saved clips">Clear All</button>
+    </div>
   </footer>
 
   <script src="popup.js"></script>

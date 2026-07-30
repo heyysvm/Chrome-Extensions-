@@ -1,34 +1,20 @@
 chrome.runtime.onInstalled.addListener(() => {
-  chrome.storage.local.get(['omniClips', 'omniPinned'], (res) => {
+  chrome.storage.local.get(['omniClips'], (res) => {
     if (!res.omniClips) {
       chrome.storage.local.set({
         omniClips: [
           {
             id: 'welcome_1',
-            text: 'Welcome to OmniBoard! 🚀 Click any clip to copy it instantly.',
+            text: 'Welcome to OmniBoard! 🚀 Anything you copy on any website will automatically save here.',
             type: 'text',
             timestamp: Date.now(),
             pinned: true
           },
           {
             id: 'welcome_2',
-            text: '{\n  "status": "success",\n  "feature": "JSON Auto-Formatter",\n  "power": 100\n}',
-            type: 'json',
+            text: 'Copy multiple items continuously while browsing, then use them one by one anytime!',
+            type: 'text',
             timestamp: Date.now() - 1000,
-            pinned: false
-          },
-          {
-            id: 'welcome_3',
-            text: 'https://github.com/heyysvm/Chrome-Extensions-',
-            type: 'url',
-            timestamp: Date.now() - 2000,
-            pinned: false
-          },
-          {
-            id: 'welcome_4',
-            text: '#6366f1',
-            type: 'color',
-            timestamp: Date.now() - 3000,
             pinned: false
           }
         ]
@@ -79,7 +65,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       };
 
       clips.unshift(newClip);
-      if (clips.length > 100) clips = clips.slice(0, 100);
+      if (clips.length > 250) clips = clips.slice(0, 250);
 
       chrome.storage.local.set({ omniClips: clips }, () => {
         sendResponse({ status: 'added', clip: newClip });
@@ -124,6 +110,13 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       chrome.storage.local.set({ omniClips: clips }, () => {
         sendResponse({ status: 'cleared' });
       });
+    });
+    return true;
+  }
+
+  if (request.action === 'CLEAR_ALL_FORCE') {
+    chrome.storage.local.set({ omniClips: [] }, () => {
+      sendResponse({ status: 'cleared_all' });
     });
     return true;
   }

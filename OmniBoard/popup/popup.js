@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const searchInput = document.getElementById('searchInput');
   const addManualBtn = document.getElementById('addManualBtn');
   const clipCount = document.getElementById('clipCount');
+  const clearUnpinnedBtn = document.getElementById('clearUnpinnedBtn');
   const clearAllBtn = document.getElementById('clearAllBtn');
   const launchPipBtn = document.getElementById('launchPipBtn');
   const filterTabs = document.querySelectorAll('.filter-tabs .tab-btn');
@@ -45,7 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
       toast = document.createElement('div');
       toast.id = 'popup-toast';
       toast.style.cssText = `
-        position: fixed; bottom: 40px; left: 50%; transform: translateX(-50%);
+        position: fixed; bottom: 45px; left: 50%; transform: translateX(-50%);
         background: rgba(56, 189, 248, 0.95); color: #0f172a;
         padding: 6px 14px; border-radius: 20px; font-size: 11px; font-weight: 800;
         box-shadow: 0 4px 15px rgba(0,0,0,0.4); z-index: 9999; opacity: 0; transition: opacity 0.2s;
@@ -71,7 +72,7 @@ document.addEventListener('DOMContentLoaded', () => {
       filtered = filtered.filter(c => c.text.toLowerCase().includes(q));
     }
 
-    clipCount.textContent = `${filtered.length} clips saved`;
+    clipCount.textContent = `${filtered.length} clips in local storage`;
 
     if (filtered.length === 0) {
       emptyState.style.display = 'flex';
@@ -106,9 +107,9 @@ document.addEventListener('DOMContentLoaded', () => {
         </div>
         ${bodyContent}
         <div class="clip-actions">
-          <button class="action-icon-btn copy" title="Copy to Clipboard">📋 Copy</button>
+          <button class="action-icon-btn copy" title="Copy item to Clipboard">📋 Copy Item</button>
           <button class="action-icon-btn pin ${clip.pinned ? 'active' : ''}" title="${clip.pinned ? 'Unpin' : 'Pin'}">📌</button>
-          <button class="action-icon-btn delete" title="Delete Clip">✕</button>
+          <button class="action-icon-btn delete" title="Delete Clip">🗑️ Delete</button>
         </div>
       `;
 
@@ -142,7 +143,6 @@ document.addEventListener('DOMContentLoaded', () => {
     return div.innerHTML;
   }
 
-  // Filter tab listeners
   filterTabs.forEach(btn => {
     btn.addEventListener('click', () => {
       filterTabs.forEach(t => t.classList.remove('active'));
@@ -152,13 +152,11 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Search input listener
   searchInput.addEventListener('input', (e) => {
     searchQuery = e.target.value;
     renderClips();
   });
 
-  // Manual Add Clip button
   addManualBtn.addEventListener('click', () => {
     const text = searchInput.value.trim();
     if (!text) return;
@@ -178,15 +176,24 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Clear All Unpinned
-  clearAllBtn.addEventListener('click', () => {
-    chrome.runtime.sendMessage({ action: 'CLEAR_CLIPS' }, () => {
-      loadClips();
-      showToastNotification('Cleared Unpinned Clips');
+  if (clearUnpinnedBtn) {
+    clearUnpinnedBtn.addEventListener('click', () => {
+      chrome.runtime.sendMessage({ action: 'CLEAR_CLIPS' }, () => {
+        loadClips();
+        showToastNotification('Cleared Unpinned Clips');
+      });
     });
-  });
+  }
 
-  // Text Transformers
+  if (clearAllBtn) {
+    clearAllBtn.addEventListener('click', () => {
+      chrome.runtime.sendMessage({ action: 'CLEAR_ALL_FORCE' }, () => {
+        loadClips();
+        showToastNotification('Cleared All Storage Clips');
+      });
+    });
+  }
+
   transformBtns.forEach(btn => {
     btn.addEventListener('click', async () => {
       const type = btn.dataset.transform;
@@ -227,7 +234,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Launch Picture-in-Picture Floating Window
   launchPipBtn.addEventListener('click', async () => {
     if (!('documentPictureInPicture' in window)) {
       showToastNotification('PIP Window supported in Chrome/Edge Desktop');
@@ -253,11 +259,14 @@ document.addEventListener('DOMContentLoaded', () => {
         .pip-list { flex: 1; overflow-y: auto; padding: 10px; display: flex; flex-direction: column; gap: 8px; }
         .pip-card {
           background: rgba(30, 41, 59, 0.7); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px;
-          padding: 8px 10px; cursor: pointer; transition: background 0.2s;
+          padding: 8px 10px; cursor: pointer; transition: background 0.2s; position: relative;
         }
         .pip-card:hover { background: rgba(51, 65, 85, 0.9); }
         .pip-card-text { font-size: 11px; word-break: break-word; max-height: 50px; overflow: hidden; color: #f8fafc; }
-        .pip-card-type { font-size: 9px; font-weight: 700; color: #94a3b8; text-transform: uppercase; margin-bottom: 4px; }
+        .pip-card-type { font-size: 9px; font-weight: 700; color: #38bdf8; text-transform: uppercase; margin-bottom: 4px; }
+        .pip-card-actions { display: flex; gap: 8px; margin-top: 6px; justify-content: flex-end; }
+        .pip-btn { background: none; border: none; color: #94a3b8; font-size: 11px; cursor: pointer; }
+        .pip-btn:hover { color: #f8fafc; }
       `;
       pipWindow.document.head.appendChild(style);
 
@@ -280,17 +289,31 @@ document.addEventListener('DOMContentLoaded', () => {
             card.innerHTML = `
               <div class="pip-card-type">${c.type}</div>
               <div class="pip-card-text">${escapeHtml(c.text)}</div>
+              <div class="pip-card-actions">
+                <button class="pip-btn pip-copy">📋 Copy Item</button>
+                <button class="pip-btn pip-del">🗑️ Delete</button>
+              </div>
             `;
-            card.addEventListener('click', () => {
+
+            card.querySelector('.pip-copy').addEventListener('click', (e) => {
+              e.stopPropagation();
               navigator.clipboard.writeText(c.text);
+              card.querySelector('.pip-copy').textContent = '✓ Copied!';
+              setTimeout(() => { card.querySelector('.pip-copy').textContent = '📋 Copy Item'; }, 1200);
             });
+
+            card.querySelector('.pip-del').addEventListener('click', (e) => {
+              e.stopPropagation();
+              chrome.runtime.sendMessage({ action: 'DELETE_CLIP', id: c.id }, () => renderPipList());
+            });
+
             listEl.appendChild(card);
           });
         });
       };
 
       renderPipList();
-      const intId = setInterval(renderPipList, 3000);
+      const intId = setInterval(renderPipList, 2500);
       pipWindow.addEventListener('pagehide', () => clearInterval(intId));
     } catch (err) {
       showToastNotification('Could not open PIP Window');
