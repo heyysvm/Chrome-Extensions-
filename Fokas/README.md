@@ -7,11 +7,14 @@ Stay focused with customizable timers, stopwatches, frameless floating sticky no
 ## ⚡ Direct Download & Installation
 
 ### 1-Click ZIP Download
-Download the pre-packaged extension ZIP:
-- [📥 **Download Fokas-v1.0.0.zip**](./Fokas-v1.0.0.zip)
+Click the download badge or link below to get the pre-packaged Chrome extension:
+
+[![Download Fokas Extension](https://img.shields.io/badge/📥_Download_Fokas_Extension-ZIP-brightgreen?style=for-the-badge&logo=googlechrome)](https://github.com/heyysvm/Chrome-Extensions-/raw/main/Fokas-v1.0.0.zip)
+
+- 📥 **Direct Download Link**: [https://github.com/heyysvm/Chrome-Extensions-/raw/main/Fokas-v1.0.0.zip](https://github.com/heyysvm/Chrome-Extensions-/raw/main/Fokas-v1.0.0.zip)
 
 ### How to Install in Chrome:
-1. Download and extract `Fokas-v1.0.0.zip` (or clone this repository).
+1. Download and extract [Fokas-v1.0.0.zip](https://github.com/heyysvm/Chrome-Extensions-/raw/main/Fokas-v1.0.0.zip).
 2. Open Google Chrome and navigate to `chrome://extensions`.
 3. Enable **Developer mode** in the top-right corner.
 4. Click **Load unpacked** in the top-left corner.
