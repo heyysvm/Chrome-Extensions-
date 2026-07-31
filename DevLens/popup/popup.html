@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DevLens</title>
+  <link rel="stylesheet" href="popup.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div class="brand">
+      <h1>dev<span>lens</span></h1>
+      <span class="version-badge">v1.0</span>
+    </div>
+    <div class="actions-top">
+      <button id="launchPipBtn" class="btn-pip" title="Launch Floating PIP Notepad">
+        Floating PIP
+      </button>
+    </div>
+  </header>
+
+  <!-- NAVIGATION TABS -->
+  <nav class="nav-tabs">
+    <button class="tab-btn active" data-view="inspector">Inspector</button>
+    <button class="tab-btn" data-view="tools">Utilities</button>
+    <button class="tab-btn" data-view="cheats">Cheat Sheet</button>
+    <button class="tab-btn" data-view="quiz">Micro Quiz</button>
+  </nav>
+
+  <main>
+
+    <!-- VIEW 1: INSPECTOR & PALETTE -->
+    <section class="view active" id="view-inspector">
+      <div class="panel">
+        <div class="inspector-trigger-box">
+          <button id="toggleInspectorBtn" class="btn-primary-glow">
+            Toggle Element Inspector
+          </button>
+          <p class="sub-desc">Hover any element on the page to inspect CSS, fonts, and dimensions. Click to save color token.</p>
+        </div>
+
+        <div class="section-header">
+          <span>Saved Color Tokens</span>
+          <button id="exportPaletteBtn" class="btn-small-ghost">Export CSS</button>
+        </div>
+
+        <div id="paletteGrid" class="palette-grid"></div>
+      </div>
+    </section>
+
+    <!-- VIEW 2: CODE UTILITIES -->
+    <section class="view" id="view-tools">
+      <div class="panel">
+        <div class="tool-controls">
+          <button class="tool-chip active" data-tool="json">JSON Format</button>
+          <button class="tool-chip" data-tool="b64e">Base64 Encode</button>
+          <button class="tool-chip" data-tool="b64d">Base64 Decode</button>
+          <button class="tool-chip" data-tool="urle">URL Encode</button>
+        </div>
+
+        <div class="tool-io">
+          <textarea id="toolInput" placeholder="Paste text, code, or JSON here..."></textarea>
+          <div class="tool-action-row">
+            <button id="runToolBtn" class="btn-primary">Process Text</button>
+            <button id="copyToolOutputBtn" class="btn-ghost">Copy Result</button>
+          </div>
+          <textarea id="toolOutput" readonly placeholder="Output will appear here..."></textarea>
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW 3: CHEAT SHEETS -->
+    <section class="view" id="view-cheats">
+      <div class="panel">
+        <div class="cheat-categories">
+          <button class="cheat-chip active" data-cat="git">Git</button>
+          <button class="cheat-chip" data-cat="flex">CSS Flex</button>
+          <button class="cheat-chip" data-cat="http">HTTP Codes</button>
+          <button class="cheat-chip" data-cat="regex">Regex</button>
+        </div>
+
+        <div id="cheatContent" class="cheat-list"></div>
+      </div>
+    </section>
+
+    <!-- VIEW 4: MICRO-BREAK QUIZ GAME -->
+    <section class="view" id="view-quiz">
+      <div class="panel quiz-panel">
+        <div class="quiz-header">
+          <span>Micro-Break Code Quiz</span>
+          <span class="score-badge" id="quizHighScore">High Score: 0</span>
+        </div>
+
+        <div class="quiz-card" id="quizCard">
+          <div class="quiz-q" id="quizQuestion">Click Start to begin 60-second Dev Quiz!</div>
+          <div class="quiz-options" id="quizOptions"></div>
+        </div>
+
+        <div class="quiz-controls">
+          <button id="startQuizBtn" class="btn-primary">Start Quiz Game</button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    <span>DevLens Developer Suite</span>
+    <span id="footerStatus">Ready</span>
+  </footer>
+
+  <script src="popup.js"></script>
+</body>
+</html>
